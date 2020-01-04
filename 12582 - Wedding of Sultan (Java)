@@ -1,0 +1,43 @@
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Stack;
+import java.util.TreeMap;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t=Integer.parseInt(sc.nextLine());
+        for(int i=0; i<t; i++){
+            String line=sc.nextLine();
+            TreeMap<Character, Integer> graph=new TreeMap<>();
+            Stack<Character> nodes=new Stack<>();
+            for(int j=0; j<line.length(); j++){
+                if(nodes.empty() || nodes.peek()!=line.charAt(j)){
+                    nodes.push(line.charAt(j));
+                    if(graph.containsKey(line.charAt(j))){
+                        graph.replace(line.charAt(j), graph.get(line.charAt(j))+1);
+                    }
+                    else{
+                        graph.put(line.charAt(j), 1);
+                    }
+                }
+                else{
+                    nodes.pop();
+                    if(!nodes.empty()){
+                        if(graph.containsKey(nodes.peek())){
+                            graph.replace(nodes.peek(), graph.get(nodes.peek())+1);
+                        }
+                        else{
+                            graph.put(nodes.peek(), 1);
+                        }
+                    }
+                }
+            }
+            graph.replace(line.charAt(0), graph.get(line.charAt(0))-1);
+            System.out.println("Case "+(i+1));
+            for(Map.Entry<Character, Integer> entry:graph.entrySet()) {
+                System.out.println(entry.getKey()+" = "+entry.getValue());
+            }
+        }
+    }
+}
